@@ -1,0 +1,21 @@
+<div>
+
+    <h2> Калькулятор (sum) </h2>
+
+    <form action="/calculate" method="POST">
+        <label for="num1">Number 1:</label>
+        <input type="number" id="num1" name="num1" required>
+        <br>
+        <label for="num2">Number 2:</label>
+        <input type="number" id="num2" name="num2" required>
+        <br>
+        <button type="submit">Calculate</button>
+    </form>
+
+    <div>
+    {% if result is not none %}
+        <h2>Result: {{ result }}</h2>
+    {% endif %}
+    </div>
+
+</div>
