@@ -1,0 +1,1 @@
+notification for email@email.com: some notification
