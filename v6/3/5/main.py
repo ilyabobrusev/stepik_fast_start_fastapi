@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel, EmailStr, constr, ValidationError
 from typing import Optional
 import time
@@ -10,7 +11,7 @@ app = FastAPI()
 class User(BaseModel):
     username: str
     email: EmailStr
-    password: constr(min_length=8, max_length=16)
+    password: constr(min_length=8, max_length=16) # type: ignore
 
 # Модель для ответа на ошибку
 class ErrorResponseModel(BaseModel):
@@ -73,9 +74,9 @@ async def invalid_user_data_exception_handler(request: Request, exc: InvalidUser
         headers={"X-ErrorHandleTime": str(time.time())}
     )
 
-# Пользовательский обработчик для ValidationError (ошибки Pydantic)
-@app.exception_handler(ValidationError)
-async def validation_exception_handler(request: Request, exc: ValidationError):
+# Пользовательский обработчик для RequestValidationError
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
     error_response = ErrorResponseModel(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         message="Validation error",
