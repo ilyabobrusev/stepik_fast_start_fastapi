@@ -1,6 +1,6 @@
 import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ToDoCreate(BaseModel):
@@ -8,7 +8,8 @@ class ToDoCreate(BaseModel):
     completed: bool | None = False
 
 
-class ToDoFromDB(ToDoCreate):  # будем возвращать из БД - унаследовались от создания и расширили 2 полями
+class ToDoFromDB(ToDoCreate):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     created_at: datetime.datetime
 
